@@ -5,6 +5,9 @@ import { motion, useScroll, useTransform, useSpring, MotionValue, AnimatePresenc
 import { useLanguage } from '@/contexts/LanguageContext'
 import { getVipDashboardPreviews } from '@/services/vipDashboardPreviewService'
 import { VipDashboardPreview } from '@/types/database'
+import { Lock } from 'lucide-react'
+import { getMarketIntelligenceItems } from '@/services/marketIntelligenceService'
+import { MarketIntelligence } from '@/types/database'
 
 interface VipTradingSectionProps {
   isMember: boolean
@@ -14,6 +17,12 @@ interface VipTradingSectionProps {
 // Breakpoint thresholds
 const MOBILE_MAX = 768
 const TABLET_MAX = 1024
+
+// Helper function for WhatsApp URL
+function getWhatsAppUrl(phoneNumber: string): string {
+  const cleaned = phoneNumber.replace(/[\s+\-]/g, '')
+  return `https://wa.me/${cleaned}`
+}
 
 // Helper component for Diamond Look
 const DiamondLayers = ({ heroOpacity, children, breakpoint }: { 
@@ -611,6 +620,312 @@ function ScrollAnimatedContent({
   )
 }
 
+// Market Intelligence Component
+function MarketIntelligenceSection({ isMember }: { isMember: boolean }) {
+  const { t, isRTL } = useLanguage()
+  const [currentTime, setCurrentTime] = useState(new Date())
+  const [marketNews, setMarketNews] = useState<MarketIntelligence[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    loadMarketIntelligence()
+  }, [])
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date())
+    }, 1000)
+    return () => clearInterval(timer)
+  }, [])
+
+  const loadMarketIntelligence = async () => {
+    setIsLoading(true)
+    setError(null)
+    try {
+      const items = await getMarketIntelligenceItems()
+      setMarketNews(items)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load market intelligence')
+      console.error('Error loading market intelligence:', err)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const formatTime = (date: Date) => {
+    return date.toLocaleTimeString('en-US', { 
+      hour12: false, 
+      hour: '2-digit', 
+      minute: '2-digit', 
+      second: '2-digit' 
+    })
+  }
+
+  const handleUpgradeClick = () => {
+    window.open(getWhatsAppUrl('+961 81 574 142'), '_blank')
+  }
+
+  const getImpactColor = (impact: 'High' | 'Medium' | 'Low') => {
+    switch (impact) {
+      case 'High':
+        return 'text-red-400'
+      case 'Medium':
+        return 'text-yellow-400'
+      case 'Low':
+        return 'text-green-400'
+    }
+  }
+
+  const getImpactBgColor = (impact: 'High' | 'Medium' | 'Low') => {
+    switch (impact) {
+      case 'High':
+        return 'bg-red-500/20 border-red-500/30'
+      case 'Medium':
+        return 'bg-yellow-500/20 border-yellow-500/30'
+      case 'Low':
+        return 'bg-green-500/20 border-green-500/30'
+    }
+  }
+
+  // For non-members, show a completely different promotional section
+  if (!isMember) {
+    return (
+      <section className="w-full py-12 md:py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          {/* Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6 }}
+            className="mb-8 md:mb-12 text-center"
+          >
+            <div className="inline-flex items-center gap-2 text-cyan-400 font-mono text-xs md:text-sm tracking-widest uppercase mb-3">
+              <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></span>
+              Market Intelligence
+            </div>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2">
+              How News Affects Markets
+            </h2>
+            <p className="text-accent/70 text-sm md:text-base max-w-2xl mx-auto">
+              Unlock real-time analysis of how current events impact trading opportunities across global markets.
+            </p>
+          </motion.div>
+
+          {/* Promotional Content Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+            {[1, 2, 3].map((item) => (
+              <motion.div
+                key={item}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ 
+                  duration: 0.5, 
+                  delay: item * 0.1,
+                  ease: [0.4, 0, 0.2, 1]
+                }}
+                className="relative group"
+              >
+                <div className="relative h-full bg-secondary-surface/40 border border-cyan-500/20 rounded-2xl p-5 md:p-6 backdrop-blur-2xl overflow-hidden transition-all duration-300 hover:border-cyan-500/40 hover:shadow-[0_0_30px_rgba(6,182,212,0.2)]">
+                  {/* Background Glow */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                  {/* Lock Icon */}
+                  <div className="flex items-center justify-center flex-col gap-4 py-8">
+                    <div className="bg-secondary-surface/80 border border-cyan-500/30 rounded-full p-6 backdrop-blur-xl">
+                      <Lock className="w-8 h-8 text-cyan-400" />
+                    </div>
+                    <div className="text-center">
+                      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/20 border border-cyan-500/30 mb-3">
+                        <span className="text-cyan-400 font-mono text-xs uppercase tracking-wider">
+                          Members Only
+                        </span>
+                      </div>
+                      <h3 className="text-lg md:text-xl font-bold text-white mb-2">
+                        Premium Market Analysis
+                      </h3>
+                      <p className="text-accent/70 text-sm mb-4">
+                        Access detailed market impact analysis and expert insights
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* CTA Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="mt-12 text-center"
+          >
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={handleUpgradeClick}
+              className="bg-cyan-500 text-white font-bold px-8 py-4 rounded-xl hover:bg-cyan-400 transition-colors text-lg shadow-lg shadow-cyan-500/20"
+            >
+              Upgrade to Access Market Intelligence
+            </motion.button>
+          </motion.div>
+        </div>
+      </section>
+    )
+  }
+
+  // Member view - show actual content
+  return (
+    <section className="w-full py-12 md:py-20 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6 }}
+          className="mb-8 md:mb-12"
+        >
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+            <div>
+              <div className="inline-flex items-center gap-2 text-cyan-400 font-mono text-xs md:text-sm tracking-widest uppercase mb-3">
+                <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></span>
+                Market Intelligence
+              </div>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2">
+                How News Affects Markets
+              </h2>
+              <p className="text-accent/70 text-sm md:text-base max-w-2xl">
+                Real-time analysis of how current events impact trading opportunities across global markets.
+              </p>
+            </div>
+            
+            {/* Secure Data Feed Header */}
+            <div className="bg-secondary-surface/40 border border-cyan-500/20 rounded-xl px-4 py-3 backdrop-blur-2xl">
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                  <span className="text-cyan-400 font-mono text-xs uppercase tracking-wider">
+                    Secure Data Feed
+                  </span>
+                </div>
+                <div className="h-4 w-px bg-cyan-500/30"></div>
+                <span className="text-white/60 font-mono text-xs">
+                  {formatTime(currentTime)}
+                </span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Loading State */}
+        {isLoading && (
+          <div className="flex items-center justify-center py-12">
+            <div className="text-accent animate-pulse">Loading market intelligence...</div>
+          </div>
+        )}
+
+        {/* Error State */}
+        {error && !isLoading && (
+          <div className="bg-red-500/20 border border-red-500/50 text-red-400 px-4 py-3 rounded-lg text-center">
+            {error}
+          </div>
+        )}
+
+        {/* News Grid - Only shown to members */}
+        {!isLoading && !error && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            {marketNews.length === 0 ? (
+              <div className="col-span-full text-center py-12 text-accent/70">
+                No market intelligence items available at this time.
+              </div>
+            ) : (
+              marketNews.map((news, index) => (
+                <motion.div
+                  key={news.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ 
+                    duration: 0.5, 
+                    delay: index * 0.1,
+                    ease: [0.4, 0, 0.2, 1]
+                  }}
+                  whileHover={{ y: -4 }}
+                  className="relative group"
+                >
+                  <div className="relative h-full bg-secondary-surface/40 border border-cyan-500/20 rounded-2xl p-5 md:p-6 backdrop-blur-2xl overflow-hidden transition-all duration-300 hover:border-cyan-500/40 hover:shadow-[0_0_30px_rgba(6,182,212,0.2)]">
+                    {/* Background Glow */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                    {/* Impact Badge */}
+                    <div className="flex items-center justify-between mb-4">
+                      <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border ${getImpactBgColor(news.impact)}`}>
+                        {news.impact === 'High' && (
+                          <span className="relative flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-red-400"></span>
+                          </span>
+                        )}
+                        {news.impact === 'Medium' && (
+                          <span className="w-2 h-2 bg-yellow-400 rounded-full"></span>
+                        )}
+                        {news.impact === 'Low' && (
+                          <span className="w-2 h-2 bg-green-400 rounded-full"></span>
+                        )}
+                        <span className={`text-xs font-bold uppercase tracking-wider ${getImpactColor(news.impact)}`}>
+                          {news.impact} Impact
+                        </span>
+                      </div>
+                      <span className="text-accent/50 font-mono text-xs">
+                        {news.date}
+                      </span>
+                    </div>
+
+                    {/* Title */}
+                    <h3 className="text-lg md:text-xl font-bold text-white mb-3 leading-tight">
+                      {news.title}
+                    </h3>
+
+                    {/* Description */}
+                    <p className="text-accent/70 text-sm mb-4 leading-relaxed">
+                      {news.description}
+                    </p>
+
+                    {/* Explanation - Full content for members */}
+                    <AnimatePresence>
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="mt-4 pt-4 border-t border-cyan-500/20"
+                      >
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className="w-1 h-4 bg-cyan-400 rounded-full"></div>
+                          <span className="text-cyan-400 font-mono text-xs uppercase tracking-wider">
+                            Market Impact Analysis
+                          </span>
+                        </div>
+                        <p className="text-white/90 text-sm leading-relaxed font-light">
+                          {news.explanation}
+                        </p>
+                      </motion.div>
+                    </AnimatePresence>
+                  </div>
+                </motion.div>
+              ))
+            )}
+          </div>
+        )}
+      </div>
+    </section>
+  )
+}
+
 // Main component
 export default function VipTradingSection({ isMember, joinedVip }: VipTradingSectionProps) {
   const hasAccess = isMember || joinedVip || false
@@ -848,6 +1163,9 @@ export default function VipTradingSection({ isMember, joinedVip }: VipTradingSec
       t={t}
       isRTL={isRTL}
     />
+
+    {/* Market Intelligence Section */}
+    <MarketIntelligenceSection isMember={hasAccess} />
     </>
   )
 }

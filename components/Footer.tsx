@@ -117,6 +117,10 @@ export default function Footer() {
                 <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse shadow-[0_0_8px_#06b6d4]" />
                 <span className="text-slate-500 text-[10px] uppercase tracking-tighter">Nodes Online</span>
              </div>
+             <div className="flex items-center gap-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse shadow-[0_0_8px_#06b6d4]" />
+                <span className="text-slate-500 text-[10px] uppercase tracking-tighter">Made by NorthTech solutions</span>
+             </div>
              <div className="text-slate-500 text-[10px] uppercase tracking-tighter">Latency: 14ms</div>
           </div>
         </div>

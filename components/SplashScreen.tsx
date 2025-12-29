@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback, useMemo } from 'react'
 import { usePathname } from 'next/navigation'
+import { motion } from 'framer-motion'
 
 export default function SplashScreen() {
   const pathname = usePathname()
@@ -45,7 +46,7 @@ export default function SplashScreen() {
   }, [])
 
   useEffect(() => {
-    const stageTimings = [1200, 1800] 
+    const stageTimings = [600, 900] 
     if (currentStage < 2) {
       const timer = setTimeout(() => setCurrentStage(prev => prev + 1), stageTimings[currentStage])
       return () => clearTimeout(timer)
@@ -58,13 +59,27 @@ export default function SplashScreen() {
     setTimeout(() => setIsVisible(false), 1000)
   }, [currentStage, isPageLoaded, isAnimating, isVisible])
 
+  // Attach event listeners when ready for interaction
   useEffect(() => {
-    if (isVisible && !isAnimating && currentStage === 2) {
-      const events = ['mousemove', 'click', 'keydown']
+    if (isVisible && !isAnimating && currentStage === 2 && isPageLoaded) {
+      const events = ['mousemove', 'click', 'keydown', 'touchstart']
       events.forEach(e => window.addEventListener(e, handleInteraction, { once: true }))
       return () => events.forEach(e => window.removeEventListener(e, handleInteraction))
     }
-  }, [isVisible, isAnimating, handleInteraction, currentStage])
+  }, [isVisible, isAnimating, handleInteraction, currentStage, isPageLoaded])
+
+  // Auto-dismiss after timeout as fallback
+  useEffect(() => {
+    if (isVisible && !isAnimating && currentStage === 2 && isPageLoaded) {
+      const autoDismissTimer = setTimeout(() => {
+        if (isVisible && !isAnimating) {
+          setIsAnimating(true)
+          setTimeout(() => setIsVisible(false), 1000)
+        }
+      }, 5000) // Auto-dismiss after 5 seconds if no interaction
+      return () => clearTimeout(autoDismissTimer)
+    }
+  }, [isVisible, isAnimating, currentStage, isPageLoaded])
 
   if (!isVisible) return null
 
@@ -75,13 +90,13 @@ export default function SplashScreen() {
       ${isAnimating ? 'opacity-0 scale-125 blur-2xl' : 'opacity-100 scale-100'}`}
     >
       {/* 1. ELECTRIC CYAN HEATMAP */}
-      <div className={`absolute inset-0 transition-opacity duration-1000 ${currentStage >= 1 ? 'opacity-40' : 'opacity-0'}`}>
+      <div className={`absolute inset-0 transition-opacity duration-500 ${currentStage >= 1 ? 'opacity-40' : 'opacity-0'}`}>
         <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-cyan-500/10 blur-[120px] animate-pulse" />
         <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-blue-600/20 blur-[120px]" />
       </div>
 
       {/* 2. TRADING ELEMENTS (Tickers & Candles) */}
-      <div className={`absolute inset-0 transition-opacity duration-1000 ${currentStage >= 1 ? 'opacity-100' : 'opacity-0'}`}>
+      <div className={`absolute inset-0 transition-opacity duration-500 ${currentStage >= 1 ? 'opacity-100' : 'opacity-0'}`}>
         {['BTC', 'ETH', 'SAGE', 'USDT', 'SOL'].map((ticker, i) => {
           const pos = tickerPositions[i]
           return (
@@ -121,7 +136,7 @@ export default function SplashScreen() {
 
       {/* 3. LOGO & ICONOGRAPHY */}
       <div className="relative z-10 flex flex-col items-center">
-        <div className={`relative transition-all duration-[1500ms] ease-out ${currentStage >= 1 ? 'scale-100 opacity-100' : 'scale-50 opacity-0'}`}>
+        <div className={`relative transition-all duration-[750ms] ease-out ${currentStage >= 1 ? 'scale-100 opacity-100' : 'scale-50 opacity-0'}`}>
           {/* Pulsing Cyan Halo */}
           <div className="absolute inset-[-20px] rounded-full border border-cyan-500/30 animate-ping opacity-20" />
           <div className="absolute inset-[-10px] rounded-full border border-cyan-400/20 animate-spin-slow" />
@@ -138,7 +153,7 @@ export default function SplashScreen() {
         </div>
 
         {/* 4. TYPOGRAPHY */}
-        <div className={`mt-12 text-center transition-all duration-1000 delay-300 ${currentStage >= 2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+        <div className={`mt-12 text-center transition-all duration-500 delay-150 ${currentStage >= 2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <h1 className="text-4xl md:text-7xl font-black tracking-tighter text-white italic drop-shadow-[0_0_30px_rgba(255,255,255,0.1)]">
             TIME TO CHANGE YOUR LIFE
           </h1>
@@ -152,7 +167,7 @@ export default function SplashScreen() {
         </div>
 
         {/* 5. INTERACTION CALL */}
-        <div className={`mt-24 transition-all duration-1000 delay-700 ${currentStage >= 2 ? 'opacity-100' : 'opacity-0'}`}>
+        <div className={`mt-24 transition-all duration-500 delay-350 ${currentStage >= 2 ? 'opacity-100' : 'opacity-0'}`}>
            <div className="px-6 py-2 rounded-full border border-cyan-500/20 bg-cyan-500/5 backdrop-blur-md animate-pulse">
              <p className="text-[11px] text-cyan-300 font-bold uppercase tracking-[0.4em]">
                Interact to Enter
@@ -161,17 +176,89 @@ export default function SplashScreen() {
         </div>
       </div>
 
-      {/* 6. BOTTOM SUCCESS CURVE */}
-      <div className="absolute bottom-0 left-0 w-full h-1/4 pointer-events-none opacity-20">
+      {/* 6. GROWTH CHART - Upward Trending Line */}
+      <div className="absolute bottom-0 left-0 w-full h-1/3 pointer-events-none opacity-40">
         <svg className="w-full h-full" viewBox="0 0 1440 320" preserveAspectRatio="none">
-          <path 
-            fill="none" 
-            stroke="#22d3ee" 
-            strokeWidth="2" 
-            strokeDasharray="10,10"
-            className="animate-draw-path"
-            d="M0,224L120,200C240,176,480,128,720,133C960,139,1200,197,1320,226L1440,256"
+          {/* Grid lines for chart context */}
+          <defs>
+            <linearGradient id="lineGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#22d3ee" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#22d3ee" stopOpacity="0.3" />
+            </linearGradient>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+              <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
+          
+          {/* Subtle grid lines */}
+          <line x1="0" y1="280" x2="1440" y2="280" stroke="#22d3ee" strokeWidth="0.5" strokeOpacity="0.1" />
+          <line x1="0" y1="240" x2="1440" y2="240" stroke="#22d3ee" strokeWidth="0.5" strokeOpacity="0.1" />
+          <line x1="0" y1="200" x2="1440" y2="200" stroke="#22d3ee" strokeWidth="0.5" strokeOpacity="0.1" />
+          
+          {/* Main growth line - smooth upward curve */}
+          <motion.path
+            d="M0,280 Q360,260 720,200 T1440,120"
+            fill="none"
+            stroke="url(#lineGradient)"
+            strokeWidth="3"
+            strokeLinecap="round"
+            filter="url(#glow)"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ 
+              pathLength: currentStage >= 1 ? 1 : 0,
+              opacity: currentStage >= 1 ? 1 : 0
+            }}
+            transition={{ 
+              duration: 1.5, 
+              delay: 0.2, 
+              ease: "easeInOut" 
+            }}
           />
+          
+          {/* Filled area under the line for depth */}
+          <motion.path
+            d="M0,280 Q360,260 720,200 T1440,120 L1440,280 Z"
+            fill="url(#lineGradient)"
+            fillOpacity="0.1"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ 
+              pathLength: currentStage >= 1 ? 1 : 0,
+              opacity: currentStage >= 1 ? 1 : 0
+            }}
+            transition={{ 
+              duration: 1.5, 
+              delay: 0.2, 
+              ease: "easeInOut" 
+            }}
+          />
+          
+          {/* Animated data points along the line */}
+          {[0, 360, 720, 1080, 1440].map((x, i) => {
+            const y = 280 - (i * 40) - (i * 5)
+            return (
+              <motion.circle
+                key={i}
+                cx={x}
+                cy={y}
+                r="4"
+                fill="#22d3ee"
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ 
+                  scale: currentStage >= 1 ? 1 : 0,
+                  opacity: currentStage >= 1 ? 0.8 : 0
+                }}
+                transition={{
+                  duration: 0.3,
+                  delay: 0.4 + (i * 0.2),
+                  ease: "easeOut"
+                }}
+              />
+            )
+          })}
         </svg>
       </div>
     </div>

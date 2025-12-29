@@ -237,6 +237,44 @@ export interface Database {
           updated_at?: string
         }
       }
+      market_intelligence: {
+        Row: {
+          id: string
+          title: string
+          impact: 'High' | 'Medium' | 'Low'
+          date: string
+          description: string
+          explanation: string
+          display_order: number
+          is_active: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          impact: 'High' | 'Medium' | 'Low'
+          date: string
+          description: string
+          explanation: string
+          display_order?: number
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          impact?: 'High' | 'Medium' | 'Low'
+          date?: string
+          description?: string
+          explanation?: string
+          display_order?: number
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+      }
     }
     Views: {
       [_ in never]: never
@@ -259,16 +297,19 @@ export type Course = Database['public']['Tables']['courses']['Row']
 export type Trade = Database['public']['Tables']['trades']['Row']
 export type MarketAnalysisSection = Database['public']['Tables']['market_analysis_sections']['Row']
 export type VipDashboardPreview = Database['public']['Tables']['vip_dashboard_previews']['Row']
+export type MarketIntelligence = Database['public']['Tables']['market_intelligence']['Row']
 
 export type UserInsert = Database['public']['Tables']['users']['Insert']
 export type CourseInsert = Database['public']['Tables']['courses']['Insert']
 export type TradeInsert = Database['public']['Tables']['trades']['Insert']
 export type MarketAnalysisSectionInsert = Database['public']['Tables']['market_analysis_sections']['Insert']
 export type VipDashboardPreviewInsert = Database['public']['Tables']['vip_dashboard_previews']['Insert']
+export type MarketIntelligenceInsert = Database['public']['Tables']['market_intelligence']['Insert']
 
 export type UserUpdate = Database['public']['Tables']['users']['Update']
 export type CourseUpdate = Database['public']['Tables']['courses']['Update']
 export type TradeUpdate = Database['public']['Tables']['trades']['Update']
 export type MarketAnalysisSectionUpdate = Database['public']['Tables']['market_analysis_sections']['Update']
 export type VipDashboardPreviewUpdate = Database['public']['Tables']['vip_dashboard_previews']['Update']
+export type MarketIntelligenceUpdate = Database['public']['Tables']['market_intelligence']['Update']
 

@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import { submitCallbackRequest } from '@/app/actions/form-actions'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 interface StepContent {
   heading: string
@@ -11,6 +12,7 @@ interface StepContent {
 
 export default function AboutJourney() {
   const router = useRouter()
+  const { t } = useLanguage()
   const [activeStep, setActiveStep] = useState(0)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [contentKey, setContentKey] = useState(0)
@@ -32,7 +34,7 @@ export default function AboutJourney() {
     e.preventDefault()
     
     if (!fullName.trim() || !email.trim() || !phoneNumber.trim()) {
-      setSubmitMessage({ type: 'error', text: 'Please fill in all fields' })
+      setSubmitMessage({ type: 'error', text: t('about.form.error.fillAll') })
       return
     }
 
@@ -58,7 +60,7 @@ export default function AboutJourney() {
         setSubmitMessage({ type: 'error', text: result.message })
       }
     } catch (error) {
-      setSubmitMessage({ type: 'error', text: 'An unexpected error occurred. Please try again.' })
+      setSubmitMessage({ type: 'error', text: t('about.form.error.unexpected') })
     } finally {
       setIsSubmitting(false)
     }
@@ -210,29 +212,26 @@ export default function AboutJourney() {
 
   const progress = ((activeStep + 1) / totalSteps) * 100
 
-  const stepContents: StepContent[] = [
+  const stepContents: StepContent[] = useMemo(() => [
     {
-      heading: 'WE SAW THE CHAOS.',
+      heading: t('about.step1.heading'),
       content: (
         <div className="space-y-6 max-w-3xl mx-auto">
           <p className="text-lg md:text-xl text-white/80 leading-relaxed font-light">
-            The market isn't designed for you to win. It's a system built on asymmetry—where institutions have the edge, 
-            the data, and the algorithms. Retail traders are left navigating a battlefield without a map.
+            {t('about.step1.paragraph1')}
           </p>
           <p className="text-base md:text-lg text-white/60 leading-relaxed">
-            We watched millions lose their savings, their dreams, their futures—not because they lacked ambition, 
-            but because they lacked the tools that the 1% have always kept for themselves.
+            {t('about.step1.paragraph2')}
           </p>
         </div>
       )
     },
     {
-      heading: 'WE FOUND THE EDGE.',
+      heading: t('about.step2.heading'),
       content: (
         <div className="space-y-8 max-w-4xl mx-auto">
           <p className="text-lg md:text-xl text-white/80 leading-relaxed font-light">
-            Through years of institutional analysis, we've reverse-engineered the strategies that move markets. 
-            We've built the systems that predict trends before they become trends.
+            {t('about.step2.paragraph1')}
           </p>
           <div className="relative h-64 bg-black/20 rounded-lg border border-cyan-500/20 p-6 backdrop-blur-sm">
             <svg className="w-full h-full" viewBox="0 0 400 200" preserveAspectRatio="xMidYMid meet">
@@ -277,18 +276,17 @@ export default function AboutJourney() {
       )
     },
     {
-      heading: 'BEYOND THE NUMBERS.',
+      heading: t('about.step3.heading'),
       content: (
         <div className="space-y-6 max-w-3xl mx-auto">
           <p className="text-lg md:text-xl text-white/80 leading-relaxed font-light">
-            This isn't just about profits. It's about transformation. Every signal, every analysis, every trade 
-            represents a life changed—a family secured, a dream realized, a future rewritten.
+            {t('about.step3.paragraph1')}
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
             {[
-              { label: 'Lives Changed', value: '10,000+' },
-              { label: 'Success Rate', value: '94%' },
-              { label: 'Avg. Returns', value: '3.2x' }
+              { label: t('about.step3.stats.livesChanged'), value: '10,000+' },
+              { label: t('about.step3.stats.successRate'), value: '94%' },
+              { label: t('about.step3.stats.avgReturns'), value: '3.2x' }
             ].map((stat, i) => (
               <div key={i} className="text-center p-6 bg-black/20 rounded-lg border border-cyan-500/10 backdrop-blur-sm">
                 <div className="text-3xl md:text-4xl font-bold text-cyan-400 mb-2">{stat.value}</div>
@@ -300,12 +298,12 @@ export default function AboutJourney() {
       )
     },
     {
-      heading: 'THE MOMENT OF TRUTH.',
+      heading: t('about.step4.heading'),
       content: (
         <div className="space-y-12 max-w-2xl mx-auto">
           <div className="text-center">
             <h2 className="text-3xl md:text-5xl font-bold text-white mb-8 tracking-tight">
-              Are you ready to join the 1%?
+              {t('about.step4.question')}
             </h2>
           </div>
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
@@ -385,7 +383,7 @@ export default function AboutJourney() {
               <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl z-0" />
               <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0" />
               {/* Button Text - On Top */}
-              <span className="relative z-10">YES, I'M READY</span>
+              <span className="relative z-10">{t('about.step4.buttonReady')}</span>
             </button>
             <button
               onClick={(e) => {
@@ -394,13 +392,13 @@ export default function AboutJourney() {
               }}
               className="action-button px-12 py-4 bg-black/40 backdrop-blur-sm border border-white/20 text-white font-bold text-lg uppercase tracking-wider rounded-lg transition-all duration-300 hover:border-cyan-500/50 hover:bg-black/60"
             >
-              NOT YET
+              {t('about.step4.buttonNotYet')}
             </button>
           </div>
         </div>
       )
     }
-  ]
+  ], [t])
 
   const [isMounted, setIsMounted] = useState(false)
 
@@ -439,7 +437,7 @@ export default function AboutJourney() {
           handleClose()
         }}
         className="fixed top-6 right-6 z-50 w-12 h-12 flex items-center justify-center bg-black/40 backdrop-blur-sm border border-white/10 rounded-full hover:border-cyan-500/50 hover:bg-black/60 transition-all duration-300 group"
-        aria-label="Close"
+        aria-label={t('about.aria.close')}
       >
         <svg className="w-6 h-6 text-white/60 group-hover:text-cyan-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -512,7 +510,7 @@ export default function AboutJourney() {
             handleBack()
           }}
           className="nav-arrow fixed left-8 top-1/2 -translate-y-1/2 z-40 w-16 h-16 flex items-center justify-center bg-black/40 backdrop-blur-sm border border-white/10 rounded-full hover:border-cyan-500/50 hover:bg-black/60 transition-all duration-300 group"
-          aria-label="Previous step"
+          aria-label={t('about.aria.previousStep')}
         >
           <svg className="w-8 h-8 text-white/60 group-hover:text-cyan-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -527,7 +525,7 @@ export default function AboutJourney() {
             handleNext()
           }}
           className="nav-arrow fixed right-8 top-1/2 -translate-y-1/2 z-40 w-16 h-16 flex items-center justify-center bg-black/40 backdrop-blur-sm border border-white/10 rounded-full hover:border-cyan-500/50 hover:bg-black/60 transition-all duration-300 group"
-          aria-label="Next step"
+          aria-label={t('about.aria.nextStep')}
         >
           <svg className="w-8 h-8 text-white/60 group-hover:text-cyan-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -577,7 +575,7 @@ export default function AboutJourney() {
                 ? 'w-8 bg-cyan-500'
                 : 'w-2 bg-white/20 hover:bg-white/40'
             }`}
-            aria-label={`Go to step ${i + 1}`}
+            aria-label={`${t('about.aria.goToStep')} ${i + 1}`}
           />
         ))}
       </div>
@@ -604,20 +602,20 @@ export default function AboutJourney() {
                 setPhoneNumber('')
               }}
               className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-white/60 hover:text-cyan-400 transition-colors"
-              aria-label="Close form"
+              aria-label={t('about.aria.closeForm')}
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
 
-            <h2 className="text-3xl font-bold text-white mb-2">Get Started</h2>
-            <p className="text-white/60 mb-6">Fill out the form and we'll contact you soon.</p>
+            <h2 className="text-3xl font-bold text-white mb-2">{t('about.form.title')}</h2>
+            <p className="text-white/60 mb-6">{t('about.form.description')}</p>
 
             <form onSubmit={handleContactSubmit} className="space-y-4">
               <input 
                 type="text" 
-                placeholder="Full Name" 
+                placeholder={t('about.form.fullName')} 
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 disabled={isSubmitting}
@@ -627,7 +625,7 @@ export default function AboutJourney() {
               />
               <input 
                 type="email" 
-                placeholder="Email Address" 
+                placeholder={t('about.form.email')} 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={isSubmitting}
@@ -637,7 +635,7 @@ export default function AboutJourney() {
               />
               <input 
                 type="tel" 
-                placeholder="Phone Number" 
+                placeholder={t('about.form.phone')} 
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
                 disabled={isSubmitting}
@@ -670,7 +668,7 @@ export default function AboutJourney() {
                   disabled={isSubmitting}
                   className="flex-1 bg-black/40 text-white font-bold py-4 rounded-xl hover:bg-black/60 transition-all disabled:opacity-50 disabled:cursor-not-allowed border border-white/10"
                 >
-                  Cancel
+                  {t('about.form.cancel')}
                 </button>
                 <button 
                   type="submit"
@@ -678,7 +676,7 @@ export default function AboutJourney() {
                   className="flex-1 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-bold py-4 rounded-xl hover:from-cyan-400 hover:to-blue-400 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-cyan-500/30"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  {isSubmitting ? 'Submitting...' : 'Submit'}
+                  {isSubmitting ? t('about.form.submitting') : t('about.form.submit')}
                 </button>
               </div>
             </form>
