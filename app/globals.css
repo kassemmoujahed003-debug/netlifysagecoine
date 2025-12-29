@@ -1,0 +1,1676 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+/* Arabic Fonts */
+@font-face {
+  font-family: 'Alexandria';
+  src: url('/fonts/Alexandria-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DG-Modal3at';
+  src: url('/fonts/DG-Modal3at-Med.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  :root {
+    /* Define RGB values for accent color (#CFE2F3) for use in rgba() */
+    --accent-rgb: 207, 226, 243;
+    
+    /* Responsive Typography using clamp() */
+    --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+    --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+    --text-base: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
+    --text-lg: clamp(1.125rem, 1rem + 0.6vw, 1.25rem);
+    --text-xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
+    --text-2xl: clamp(1.5rem, 1.25rem + 1.25vw, 2rem);
+    --text-3xl: clamp(1.875rem, 1.5rem + 1.875vw, 2.5rem);
+    --text-4xl: clamp(2.25rem, 1.75rem + 2.5vw, 3rem);
+    --text-5xl: clamp(2.75rem, 2rem + 3.75vw, 4rem);
+    --text-6xl: clamp(3rem, 2rem + 5vw, 5rem);
+    --text-7xl: clamp(3.5rem, 2.25rem + 6.25vw, 6rem);
+    
+    /* Animation timing - reduced for mobile */
+    --animation-duration: 0.3s;
+    --animation-duration-slow: 0.6s;
+    --scroll-animation-distance: 30px;
+  }
+  
+  /* Reduce animation intensity on mobile */
+  @media (max-width: 768px) {
+    :root {
+      --animation-duration: 0.2s;
+      --animation-duration-slow: 0.4s;
+      --scroll-animation-distance: 15px;
+    }
+  }
+  
+  /* Respect user's motion preferences - Commented out to allow animations */
+  /* Uncomment the block below if you want to respect system motion preferences */
+  /*
+  @media (prefers-reduced-motion: reduce) {
+    :root {
+      --animation-duration: 0.01ms;
+      --animation-duration-slow: 0.01ms;
+      --scroll-animation-distance: 0px;
+    }
+    
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+  */
+  
+  /* Prevent horizontal scroll without breaking sticky positioning */
+  /* Use 'clip' instead of 'hidden' - clip doesn't create a scroll container */
+  html {
+    overflow-x: clip;
+    max-width: 100vw;
+    transition: direction 0.3s ease-in-out;
+  }
+  
+  body {
+    overflow-x: clip;
+    max-width: 100vw;
+    @apply bg-primary-dark text-accent;
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-base-white;
+  }
+  
+  /* RTL Support */
+  [dir="rtl"] body {
+    font-family: 'Alexandria', 'Inter', system-ui, sans-serif;
+  }
+  
+  [dir="rtl"] h1,
+  [dir="rtl"] h2,
+  [dir="rtl"] h3,
+  [dir="rtl"] h4,
+  [dir="rtl"] h5,
+  [dir="rtl"] h6 {
+    font-family: 'DG-Modal3at', 'Alexandria', 'Inter', system-ui, sans-serif;
+  }
+  
+  [dir="rtl"] {
+    direction: rtl;
+    text-align: right;
+  }
+  
+  [dir="ltr"] {
+    direction: ltr;
+    text-align: left;
+  }
+  
+  /* Touch-friendly tap targets */
+  @media (max-width: 768px) {
+    button, a, [role="button"] {
+      min-height: 44px;
+      min-width: 44px;
+    }
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply relative font-semibold px-6 py-3 rounded-2xl
+           text-base-white
+           transition-all duration-300 ease-out
+           focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-primary-dark
+           overflow-hidden;
+    background: rgba(207, 226, 243, 0.15);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 
+      0 8px 32px 0 rgba(31, 38, 135, 0.15),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.3);
+  }
+  
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    transition: left 0.5s ease;
+  }
+  
+  .btn-primary:hover {
+    background: rgba(207, 226, 243, 0.25);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 
+      0 12px 40px 0 rgba(31, 38, 135, 0.2),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.4);
+    transform: translateY(-1px);
+  }
+  
+  .btn-primary:hover::before {
+    left: 100%;
+  }
+  
+  .btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 
+      0 4px 20px 0 rgba(31, 38, 135, 0.15),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.3);
+  }
+  
+  .btn-secondary {
+    @apply relative font-semibold px-6 py-3 rounded-2xl
+           text-base-white
+           transition-all duration-300 ease-out
+           focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-primary-dark
+           overflow-hidden;
+    background: rgba(53, 80, 96, 0.2);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 
+      0 8px 32px 0 rgba(31, 38, 135, 0.1),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+  }
+  
+  .btn-secondary:hover {
+    background: rgba(53, 80, 96, 0.3);
+    border-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 
+      0 12px 40px 0 rgba(31, 38, 135, 0.15),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+  }
+  
+  .btn-secondary:active {
+    transform: translateY(0);
+    box-shadow: 
+      0 4px 20px 0 rgba(31, 38, 135, 0.1),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+  }
+  
+  .input-field {
+    @apply w-full px-4 py-3 bg-base-white border border-gray-300 rounded-lg
+           text-primary-dark placeholder-gray-500
+           focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent
+           transition-all duration-200;
+  }
+  
+  .label-field {
+    @apply block text-sm font-medium text-primary-dark mb-2;
+  }
+}
+/* ================================================
+   RESPONSIVE TYPOGRAPHY UTILITIES
+   ================================================ */
+.text-responsive-xs { font-size: var(--text-xs); }
+.text-responsive-sm { font-size: var(--text-sm); }
+.text-responsive-base { font-size: var(--text-base); }
+.text-responsive-lg { font-size: var(--text-lg); }
+.text-responsive-xl { font-size: var(--text-xl); }
+.text-responsive-2xl { font-size: var(--text-2xl); }
+.text-responsive-3xl { font-size: var(--text-3xl); }
+.text-responsive-4xl { font-size: var(--text-4xl); }
+.text-responsive-5xl { font-size: var(--text-5xl); }
+.text-responsive-6xl { font-size: var(--text-6xl); }
+.text-responsive-7xl { font-size: var(--text-7xl); }
+
+/* ================================================
+   ANIMATION KEYFRAMES - Mobile Optimized
+   ================================================ */
+
+@keyframes pulse-subtle {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0.4); }
+  50% { box-shadow: 0 0 20px 4px rgba(var(--accent-rgb), 0.2); }
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Reduced pulse on mobile for performance */
+@media (max-width: 768px) {
+  .animate-pulse-subtle {
+    animation: pulse-subtle 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}
+
+/* Metallic Shine Animation for Headline */
+@keyframes metallic-shine {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.metallic-shine {
+  background: linear-gradient(
+    90deg,
+    #ffffff 0%,
+    #ffffff 20%,
+    #4A90E2 30%,
+    #6BB6FF 40%,
+    #ffffff 50%,
+    #ffffff 70%,
+    #4A90E2 80%,
+    #6BB6FF 90%,
+    #ffffff 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: metallic-shine 4s linear infinite;
+  display: inline-block;
+}
+
+/* Slower animation on mobile for battery saving */
+@media (max-width: 768px) {
+  .metallic-shine {
+    animation: metallic-shine 6s linear infinite;
+  }
+}
+
+/* Diamond Float Animations - Mobile Optimized */
+@keyframes diamond-float {
+  0%, 100% {
+    transform: translateY(0) rotate(45deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(45deg);
+  }
+}
+
+@keyframes diamond-float-mobile {
+  0%, 100% {
+    transform: translateY(0) rotate(45deg);
+  }
+  50% {
+    transform: translateY(-5px) rotate(45deg);
+  }
+}
+
+@keyframes diamond-float-slow {
+  0%, 100% {
+    transform: translateY(0) rotate(45deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(45deg);
+  }
+}
+
+.diamond-float {
+  animation: diamond-float 4s ease-in-out infinite;
+  will-change: transform;
+}
+
+.diamond-float-slow {
+  animation: diamond-float-slow 5s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Reduced movement on mobile */
+@media (max-width: 768px) {
+  .diamond-float {
+    animation: diamond-float-mobile 5s ease-in-out infinite;
+  }
+  .diamond-float-slow {
+    animation: diamond-float-mobile 6s ease-in-out infinite;
+  }
+}
+
+/* Diamond Glow Effect - Mobile Optimized */
+@keyframes diamond-glow {
+  0%, 100% {
+    box-shadow: 
+      0 10px 40px -10px rgba(74, 144, 226, 0.4),
+      0 0 0 0 rgba(74, 144, 226, 0);
+  }
+  50% {
+    box-shadow: 
+      0 10px 40px -10px rgba(74, 144, 226, 0.6),
+      0 0 20px 5px rgba(74, 144, 226, 0.2);
+  }
+}
+
+@keyframes diamond-glow-mobile {
+  0%, 100% {
+    box-shadow: 0 5px 20px -5px rgba(74, 144, 226, 0.3);
+  }
+  50% {
+    box-shadow: 0 5px 25px -5px rgba(74, 144, 226, 0.4);
+  }
+}
+
+.diamond-glow {
+  animation: diamond-glow 3s ease-in-out infinite;
+  will-change: box-shadow;
+}
+
+@media (max-width: 768px) {
+  .diamond-glow {
+    animation: diamond-glow-mobile 4s ease-in-out infinite;
+  }
+}
+
+/* Main Diamond Glow Effect - Mobile Optimized */
+@keyframes diamond-main-glow {
+  0%, 100% {
+    box-shadow: 
+      0 0 80px -15px rgba(74, 144, 226, 0.5),
+      inset 0 0 30px rgba(74, 144, 226, 0.1);
+    border-color: rgba(74, 144, 226, 0.7);
+  }
+  50% {
+    box-shadow: 
+      0 0 100px -10px rgba(74, 144, 226, 0.7),
+      inset 0 0 40px rgba(74, 144, 226, 0.15);
+    border-color: rgba(107, 182, 255, 0.8);
+  }
+}
+
+@keyframes diamond-main-glow-mobile {
+  0%, 100% {
+    box-shadow: 0 0 40px -10px rgba(74, 144, 226, 0.4);
+    border-color: rgba(74, 144, 226, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 50px -8px rgba(74, 144, 226, 0.5);
+    border-color: rgba(107, 182, 255, 0.7);
+  }
+}
+
+.diamond-main-glow {
+  animation: diamond-main-glow 4s ease-in-out infinite;
+  will-change: box-shadow, border-color;
+}
+
+@media (max-width: 768px) {
+  .diamond-main-glow {
+    animation: diamond-main-glow-mobile 5s ease-in-out infinite;
+  }
+}
+
+/* Define the shine animation moving from left (-100%) to right (100%) */
+@keyframes shine-metallic {
+  to {
+    background-position: 200% center;
+  }
+}
+
+/* Create a utility class to apply the animation */
+.animate-text-shine {
+  background-size: 200% auto;
+  animation: shine-metallic 5s linear infinite;
+}
+
+@media (max-width: 768px) {
+  .animate-text-shine {
+    animation: shine-metallic 7s linear infinite;
+  }
+}
+
+/* ================================================
+   MOBILE DRAWER ANIMATION
+   ================================================ */
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutToRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.animate-slide-in {
+  animation: slideInFromRight 0.3s ease-out forwards;
+}
+
+.animate-slide-out {
+  animation: slideOutToRight 0.3s ease-in forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
+.animate-fade-out {
+  animation: fadeOut 0.2s ease-in forwards;
+}
+
+/* Staggered menu items animation */
+@keyframes menuItemSlide {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.menu-item-animate {
+  animation: menuItemSlide 0.3s ease-out forwards;
+  opacity: 0;
+}
+
+.menu-item-animate:nth-child(1) { animation-delay: 0.1s; }
+.menu-item-animate:nth-child(2) { animation-delay: 0.15s; }
+.menu-item-animate:nth-child(3) { animation-delay: 0.2s; }
+.menu-item-animate:nth-child(4) { animation-delay: 0.25s; }
+.menu-item-animate:nth-child(5) { animation-delay: 0.3s; }
+
+/* ================================================
+   SCROLL-TRIGGERED ANIMATION HELPERS
+   ================================================ */
+.scroll-animate {
+  opacity: 0;
+  transform: translateY(var(--scroll-animation-distance));
+  transition: opacity var(--animation-duration-slow) ease-out,
+              transform var(--animation-duration-slow) ease-out;
+}
+
+.scroll-animate.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ================================================
+   PINNED SCROLL SECTION STYLES
+   Critical for sticky/pinned scroll animations
+   ================================================ */
+
+/* Ensure pinned sections work correctly */
+.scroll-pin-section {
+  position: relative;
+  /* Don't use overflow: hidden on parents of sticky elements */
+  overflow: visible !important;
+}
+
+/* Sticky container for scroll animations */
+.scroll-pin-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100dvh; /* Dynamic viewport height for mobile */
+  will-change: transform;
+  contain: layout style paint;
+}
+
+/* Apply will-change for GPU acceleration on animated elements */
+.scroll-animated-element {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* Fix for iOS Safari sticky issues */
+@supports (-webkit-touch-callout: none) {
+  .scroll-pin-sticky {
+    /* Use -webkit-sticky for older iOS versions */
+    position: -webkit-sticky;
+    position: sticky;
+  }
+}
+
+/* Prevent URL bar resize from breaking scroll calculations on mobile */
+@media (max-width: 768px) {
+  .scroll-pin-sticky {
+    /* Use svh (small viewport height) to ignore URL bar */
+    min-height: 100svh;
+    /* Fallback for browsers that don't support svh */
+    min-height: -webkit-fill-available;
+  }
+}
+
+/* Tablet-specific adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .scroll-pin-sticky {
+    /* Use dvh for dynamic viewport on tablets */
+    height: 100dvh;
+  }
+}
+
+/* ================================================
+   PERFORMANCE OPTIMIZATIONS
+   ================================================ */
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Optimized transform for pinned scroll elements */
+.optimize-scroll {
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000px;
+  perspective: 1000px;
+}
+
+/* Prevent ancestor overflow from breaking sticky */
+.overflow-safe {
+  overflow: visible !important;
+  -webkit-overflow-scrolling: auto !important;
+}
+
+/* Force hardware acceleration on transforms */
+.force-gpu {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Hide 3D canvas on low-power mode or when battery saver is on */
+@media (prefers-reduced-motion: reduce) {
+  .three-canvas-container {
+    display: none !important;
+  }
+  .three-fallback {
+    display: block !important;
+  }
+}
+
+/* ================================================
+   MOBILE-SPECIFIC UTILITIES
+   ================================================ */
+@media (max-width: 640px) {
+  .mobile-full-width {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  
+  .mobile-stack {
+    flex-direction: column !important;
+  }
+  
+  .mobile-center {
+    text-align: center !important;
+    align-items: center !important;
+  }
+}
+
+/* Hide on mobile */
+.hide-mobile {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .hide-mobile {
+    display: none !important;
+  }
+}
+
+/* Show only on mobile */
+.show-mobile {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .show-mobile {
+    display: block !important;
+  }
+}
+
+/* Safe area padding for notched devices */
+@supports (padding: max(0px)) {
+  .safe-area-inset {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+}
+
+/* Horizontal scroll container for tabs */
+.horizontal-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.horizontal-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* ================================================
+   PREMIUM SPLASH SCREEN ANIMATIONS
+   ================================================ */
+
+/* Floating Particles */
+@keyframes float-particle {
+  0% {
+    transform: translateY(100vh) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.6;
+  }
+  90% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-100px) translateX(20px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.floating-particle {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  background: rgba(107, 182, 255, 0.4);
+  box-shadow: 
+    0 0 2px rgba(107, 182, 255, 0.6),
+    0 0 4px rgba(107, 182, 255, 0.4);
+  animation: float-particle linear infinite;
+  will-change: transform, opacity;
+}
+
+/* Logo Glassmorphism Container */
+.logo-glass-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1000px;
+}
+
+.logo-glass-circle {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  animation: logo-breathe 4s ease-in-out infinite;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.logo-glass-circle.logo-enhanced {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(107, 182, 255, 0.2);
+  box-shadow: 
+    0 12px 48px rgba(74, 144, 226, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 0 40px rgba(74, 144, 226, 0.1);
+}
+
+.logo-glass-circle.logo-final {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(107, 182, 255, 0.3);
+  box-shadow: 
+    0 16px 64px rgba(74, 144, 226, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 0 60px rgba(74, 144, 226, 0.15);
+}
+
+.logo-glass-circle::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle,
+    rgba(107, 182, 255, 0.1) 0%,
+    transparent 70%
+  );
+  animation: logo-shine 6s ease-in-out infinite;
+}
+
+.splash-logo-premium {
+  width: 120px;
+  height: auto;
+  max-width: 60%;
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 4px 12px rgba(74, 144, 226, 0.3));
+  animation: logo-3d-tilt 6s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes logo-breathe {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 
+      0 12px 48px rgba(74, 144, 226, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+}
+
+@keyframes logo-3d-tilt {
+  0%, 100% {
+    transform: rotateY(0deg) rotateX(0deg);
+  }
+  25% {
+    transform: rotateY(5deg) rotateX(-2deg);
+  }
+  50% {
+    transform: rotateY(0deg) rotateX(0deg);
+  }
+  75% {
+    transform: rotateY(-5deg) rotateX(2deg);
+  }
+}
+
+@keyframes logo-shine {
+  0%, 100% {
+    transform: rotate(0deg);
+    opacity: 0.3;
+  }
+  50% {
+    transform: rotate(180deg);
+    opacity: 0.6;
+  }
+}
+
+/* Premium Text Reveal Animation */
+.splash-text-container-premium {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.splash-text-reveal {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: clamp(1.75rem, 5vw, 3rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-align: center;
+  margin: 0;
+}
+
+.text-reveal-mask {
+  display: inline-block;
+  overflow: hidden;
+  position: relative;
+}
+
+.text-reveal-content {
+  display: inline-block;
+  background: linear-gradient(
+    135deg,
+    #ffffff 0%,
+    #ffffff 40%,
+    #6BB6FF 50%,
+    #ffffff 60%,
+    #ffffff 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: 
+    text-reveal-slide 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both,
+    text-shine-premium 4s linear 1.4s infinite;
+  transform: translateY(100%);
+}
+
+@keyframes text-reveal-slide {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes text-shine-premium {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* Premium Trading Graph */
+.trading-graph-container-premium {
+  width: 100%;
+  max-width: 700px;
+  padding: 0 2rem;
+}
+
+.graph-wrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 40%;
+}
+
+.trading-graph-premium {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Trading Line Drawing Animation */
+.trading-line-premium {
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  animation: draw-line-premium 2.5s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+  filter: url(#premiumGlow);
+}
+
+@keyframes draw-line-premium {
+  from {
+    stroke-dashoffset: 400;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Trading Area Fill */
+.trading-area-premium {
+  opacity: 0;
+  animation: fade-in-area-premium 1.5s ease-out 1.5s forwards;
+}
+
+@keyframes fade-in-area-premium {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Scanning Line Animation */
+.scanning-line-group {
+  animation: scan-line 3s ease-in-out 2.8s infinite;
+}
+
+.scanning-line {
+  filter: drop-shadow(0 0 4px rgba(107, 182, 255, 0.8));
+}
+
+@keyframes scan-line {
+  0% {
+    transform: translateX(0);
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(300px);
+    opacity: 0.6;
+  }
+}
+
+/* Live Dot Animation */
+.live-dot {
+  opacity: 0;
+  animation: 
+    live-dot-appear 0.5s ease-out 3s forwards,
+    live-dot-pulse 2s ease-in-out 3.5s infinite;
+}
+
+.live-dot-ring {
+  opacity: 0;
+  animation: 
+    live-dot-ring-appear 0.5s ease-out 3s forwards,
+    live-dot-ring-pulse 2s ease-in-out 3.5s infinite;
+}
+
+@keyframes live-dot-appear {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes live-dot-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes live-dot-ring-appear {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+}
+
+@keyframes live-dot-ring-pulse {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.5);
+  }
+}
+
+@keyframes graph-fade-in-premium {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Exit Animations */
+.splash-exit {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  animation: splash-exit-blur 1s ease-out forwards;
+}
+
+@keyframes splash-exit-blur {
+  0% {
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+    opacity: 1;
+  }
+  100% {
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    opacity: 0;
+  }
+}
+
+.splash-content-exit .logo-glass-container {
+  animation: logo-zip-exit 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes logo-zip-exit {
+  0% {
+    transform: scale(1) translateZ(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(3) translateZ(200px);
+    opacity: 0;
+  }
+}
+
+.splash-content-exit .splash-text-container-premium,
+.splash-content-exit .trading-graph-container-premium {
+  animation: content-fade-exit 0.8s ease-out forwards;
+}
+
+@keyframes content-fade-exit {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+/* Reduced animation on mobile for performance */
+@media (max-width: 768px) {
+  .logo-glass-circle {
+    width: 150px;
+    height: 150px;
+  }
+
+  .splash-logo-premium {
+    width: 90px;
+  }
+
+  .splash-text-reveal {
+    font-size: clamp(1.5rem, 6vw, 2.5rem);
+  }
+
+  .trading-graph-container-premium {
+    max-width: 95%;
+    padding: 0 1rem;
+  }
+
+  .trading-line-premium {
+    stroke-width: 2.5;
+  }
+
+  .floating-particle {
+    animation-duration: 20s;
+  }
+}
+
+/* Enter Hint */
+.enter-hint {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.enter-hint p {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Stage-based transitions */
+@keyframes stage-transition {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Spin Slow Animation */
+@keyframes spin-slow {
+  from { 
+    transform: rotate(0deg); 
+  }
+  to { 
+    transform: rotate(360deg); 
+  }
+}
+
+.animate-spin-slow { 
+  animation: spin-slow 12s linear infinite;
+  will-change: transform;
+}
+
+/* Float Slow Animation */
+@keyframes float-slow {
+  0%, 100% { 
+    transform: translateY(0) translateX(0); 
+  }
+  50% { 
+    transform: translateY(-20px) translateX(10px); 
+  }
+}
+
+.animate-float-slow { 
+  animation: float-slow 6s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Candle Drift Animation */
+@keyframes candle-drift {
+  0% { 
+    transform: translateY(100vh) scaleY(0); 
+    opacity: 0; 
+  }
+  20% { 
+    opacity: 1; 
+  }
+  80% { 
+    opacity: 1; 
+  }
+  100% { 
+    transform: translateY(-100vh) scaleY(1); 
+    opacity: 0; 
+  }
+}
+
+.animate-candle-drift { 
+  animation: candle-drift 8s linear infinite;
+  will-change: transform, opacity;
+}
+
+/* Draw Path Animation */
+@keyframes draw-path {
+  from { 
+    stroke-dasharray: 2000; 
+    stroke-dashoffset: 2000; 
+  }
+  to { 
+    stroke-dasharray: 2000; 
+    stroke-dashoffset: 0; 
+  }
+}
+
+.animate-draw-path { 
+  animation: draw-path 4s ease-out forwards;
+  will-change: stroke-dashoffset;
+}
+
+/* Faster Animation Variants for Hover State */
+@keyframes float-fast {
+  0%, 100% { 
+    transform: translateY(0) translateX(0); 
+  }
+  50% { 
+    transform: translateY(-30px) translateX(15px); 
+  }
+}
+
+.animate-float-fast { 
+  animation: float-fast 2s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes candle-drift-fast {
+  0% { 
+    transform: translateY(100vh) scaleY(0); 
+    opacity: 0; 
+  }
+  20% { 
+    opacity: 1; 
+  }
+  80% { 
+    opacity: 1; 
+  }
+  100% { 
+    transform: translateY(-100vh) scaleY(1); 
+    opacity: 0; 
+  }
+}
+
+.animate-candle-drift-fast { 
+  animation: candle-drift-fast 3s linear infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes draw-path-fast {
+  from { 
+    stroke-dasharray: 2000; 
+    stroke-dashoffset: 2000; 
+  }
+  to { 
+    stroke-dasharray: 2000; 
+    stroke-dashoffset: 0; 
+  }
+}
+
+.animate-draw-path-fast { 
+  animation: draw-path-fast 1.5s ease-out infinite; 
+}
+
+@keyframes pulse-fast {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.animate-pulse-fast {
+  animation: pulse-fast 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Fire Effect Animations */
+@keyframes fire-glow {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+.animate-fire-glow {
+  animation: fire-glow 0.8s ease-in-out infinite;
+}
+
+@keyframes fire-flicker {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1) rotate(0deg);
+  }
+  25% {
+    opacity: 0.9;
+    transform: scale(1.02) rotate(1deg);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(0.98) rotate(-1deg);
+  }
+  75% {
+    opacity: 0.95;
+    transform: scale(1.01) rotate(0.5deg);
+  }
+}
+
+.animate-fire-flicker {
+  animation: fire-flicker 0.3s ease-in-out infinite;
+}
+
+@keyframes fire-flicker-delayed {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1) rotate(0deg);
+  }
+  25% {
+    opacity: 0.7;
+    transform: scale(1.03) rotate(-1deg);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.97) rotate(1deg);
+  }
+  75% {
+    opacity: 0.8;
+    transform: scale(1.02) rotate(-0.5deg);
+  }
+}
+
+.animate-fire-flicker-delayed {
+  animation: fire-flicker-delayed 0.4s ease-in-out infinite;
+  animation-delay: 0.15s;
+}
+
+@keyframes fire-particle {
+  0% {
+    opacity: 0;
+    transform: translateY(0) translateX(0) scale(0.5);
+  }
+  20% {
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-20px) translateX(5px) scale(1);
+    opacity: 0.8;
+  }
+  80% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-40px) translateX(-5px) scale(0.3);
+  }
+}
+
+.animate-fire-particle {
+  animation: fire-particle 1.2s ease-out infinite;
+}
+
+@keyframes fire-flame-1 {
+  0%, 100% {
+    transform: translateX(0) scaleY(1) scaleX(1);
+    opacity: 0.7;
+  }
+  25% {
+    transform: translateX(-3px) scaleY(1.1) scaleX(0.9);
+    opacity: 0.9;
+  }
+  50% {
+    transform: translateX(2px) scaleY(0.95) scaleX(1.05);
+    opacity: 0.8;
+  }
+  75% {
+    transform: translateX(-2px) scaleY(1.05) scaleX(0.95);
+    opacity: 0.85;
+  }
+}
+
+.animate-fire-flame-1 {
+  animation: fire-flame-1 0.5s ease-in-out infinite;
+}
+
+@keyframes fire-flame-2 {
+  0%, 100% {
+    transform: translateX(0) scaleY(1) scaleX(1);
+    opacity: 0.8;
+  }
+  25% {
+    transform: translateX(3px) scaleY(1.15) scaleX(0.9);
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(-2px) scaleY(0.9) scaleX(1.1);
+    opacity: 0.85;
+  }
+  75% {
+    transform: translateX(2px) scaleY(1.1) scaleX(0.95);
+    opacity: 0.95;
+  }
+}
+
+.animate-fire-flame-2 {
+  animation: fire-flame-2 0.6s ease-in-out infinite;
+  animation-delay: 0.2s;
+}
+
+@keyframes fire-flame-3 {
+  0%, 100% {
+    transform: translateX(0) scaleY(1) scaleX(1);
+    opacity: 0.7;
+  }
+  25% {
+    transform: translateX(2px) scaleY(1.08) scaleX(0.95);
+    opacity: 0.9;
+  }
+  50% {
+    transform: translateX(-3px) scaleY(0.92) scaleX(1.05);
+    opacity: 0.75;
+  }
+  75% {
+    transform: translateX(1px) scaleY(1.03) scaleX(0.98);
+    opacity: 0.88;
+  }
+}
+
+.animate-fire-flame-3 {
+  animation: fire-flame-3 0.55s ease-in-out infinite;
+  animation-delay: 0.1s;
+}
+
+@keyframes fire-flame-rotate {
+  0%, 100% {
+    transform: translate(-50%, -50%) scaleY(1) scaleX(1);
+    opacity: 0.8;
+  }
+  25% {
+    transform: translate(-50%, -50%) scaleY(1.25) scaleX(0.85);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-50%, -50%) scaleY(0.8) scaleX(1.15);
+    opacity: 0.85;
+  }
+  75% {
+    transform: translate(-50%, -50%) scaleY(1.15) scaleX(0.9);
+    opacity: 0.95;
+  }
+}
+
+@keyframes fire-surface {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-fire-surface {
+  animation: fire-surface 0.6s ease-in-out infinite;
+}
+
+/* Respect user's motion preferences - Commented out to allow animations */
+/* Uncomment the block below if you want to respect system motion preferences */
+/*
+@media (prefers-reduced-motion: reduce) {
+  .splash-logo-premium,
+  .logo-glass-circle,
+  .text-reveal-content,
+  .trading-line-premium,
+  .scanning-line,
+  .live-dot,
+  .live-dot-ring,
+  .floating-particle {
+    animation: none !important;
+  }
+
+  .text-reveal-content {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .trading-line-premium {
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+  }
+
+  .live-dot,
+  .live-dot-ring {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .scanning-line {
+    display: none;
+  }
+
+  .logo-glass-circle,
+  .logo-glass-circle.logo-enhanced,
+  .logo-glass-circle.logo-final {
+    transition: none;
+  }
+
+  .animate-spin-slow,
+  .animate-float-slow,
+  .animate-float-fast,
+  .animate-candle-drift,
+  .animate-candle-drift-fast,
+  .animate-draw-path,
+  .animate-draw-path-fast,
+  .animate-pulse-fast,
+  .animate-fire-glow,
+  .animate-fire-flicker,
+  .animate-fire-flicker-delayed,
+  .animate-fire-particle,
+  .animate-fire-flame-1,
+  .animate-fire-flame-2,
+  .animate-fire-flame-3,
+  .animate-fire-surface,
+  [style*="fire-flame-rotate"] {
+    animation: none !important;
+  }
+}
+*/
+
+/* ================================================
+   ABOUT JOURNEY COMPONENT STYLES
+   ================================================ */
+
+/* Journey Content Animation */
+.journey-content {
+  will-change: transform, opacity, filter;
+}
+
+/* Premium YES Button Neon Glow */
+.action-button {
+  position: relative;
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+}
+
+.action-button:hover {
+  box-shadow: 
+    0 0 40px rgba(6, 182, 212, 0.6),
+    0 0 80px rgba(6, 182, 212, 0.4),
+    0 0 120px rgba(6, 182, 212, 0.2),
+    inset 0 0 20px rgba(6, 182, 212, 0.1);
+}
+
+.action-button::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(45deg, #06b6d4, #3b82f6, #06b6d4);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.action-button:hover::before {
+  opacity: 1;
+  animation: border-glow 2s ease-in-out infinite;
+}
+
+@keyframes border-glow {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ================================================
+   CINEMATIC PAGE TRANSITIONS
+   ================================================ */
+
+/* Page Transition Wrapper */
+.page-transition-wrapper {
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              filter 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.page-exiting {
+  opacity: 0;
+  filter: blur(20px);
+  pointer-events: none;
+}
+
+.page-entering {
+  opacity: 0;
+  filter: blur(20px);
+}
+
+.page-visible {
+  opacity: 1;
+  filter: blur(0);
+}
+
+/* Home Page Exit Animation */
+.page-content {
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+              filter 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body:has([data-navigating="true"]) .page-content,
+body:has([data-navigating="true"]) #home-page {
+  opacity: 0;
+  filter: blur(30px);
+  transform: scale(0.95);
+}
+
+/* About Page Entrance Animation */
+.about-page-content {
+  opacity: 0;
+  filter: blur(30px);
+  transform: scale(0.95);
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 1s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.about-page-content.about-entered {
+  opacity: 1;
+  filter: blur(0);
+  transform: scale(1);
+}
+
+.about-page-entrance {
+  opacity: 0;
+  filter: blur(30px);
+  transform: scale(0.95);
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 1s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.about-page-entrance.entered {
+  opacity: 1;
+  filter: blur(0);
+  transform: scale(1);
+}
+
+
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: inline-flex;
+  animation: marquee 20s linear infinite;
+  min-width: 200%;
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.animate-spin-slow {
+  animation: spin-slow 3s linear infinite;
+}

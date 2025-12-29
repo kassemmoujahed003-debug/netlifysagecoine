@@ -1,0 +1,143 @@
+{
+  "stock_exchanges": [
+    {
+      "name": "New York Stock Exchange",
+      "code": "NYSE",
+      "timezone": "America/New_York",
+      "regular_hours": {
+        "open": "09:30",
+        "close": "16:00"
+      },
+      "notes": "Weekdays Mon–Fri"
+    },
+    {
+      "name": "NASDAQ",
+      "code": "NASDAQ",
+      "timezone": "America/New_York",
+      "regular_hours": {
+        "open": "09:30",
+        "close": "16:00"
+      },
+      "notes": "Weekdays Mon–Fri"
+    },
+    {
+      "name": "London Stock Exchange",
+      "code": "LSE",
+      "timezone": "Europe/London",
+      "regular_hours": {
+        "open": "08:00",
+        "close": "16:30"
+      },
+      "notes": "Weekdays Mon–Fri"
+    },
+    {
+      "name": "Tokyo Stock Exchange",
+      "code": "TSE",
+      "timezone": "Asia/Tokyo",
+      "regular_hours": {
+        "open": "09:00",
+        "close": "15:00"
+      },
+      "breaks": [
+        {
+          "start": "11:30",
+          "end": "12:30"
+        }
+      ],
+      "notes": "Weekdays Mon–Fri"
+    },
+    {
+      "name": "Shanghai Stock Exchange",
+      "code": "SSE",
+      "timezone": "Asia/Shanghai",
+      "regular_hours": {
+        "open": "09:30",
+        "close": "15:00"
+      },
+      "breaks": [
+        {
+          "start": "11:30",
+          "end": "13:00"
+        }
+      ],
+      "notes": "Weekdays Mon–Fri"
+    },
+    {
+      "name": "Hong Kong Stock Exchange",
+      "code": "HKEX",
+      "timezone": "Asia/Hong_Kong",
+      "regular_hours": {
+        "open": "09:30",
+        "close": "16:00"
+      },
+      "breaks": [
+        {
+          "start": "12:00",
+          "end": "13:00"
+        }
+      ],
+      "notes": "Weekdays Mon–Fri"
+    },
+    {
+      "name": "Euronext (Paris / Amsterdam / Brussels)",
+      "code": "EURONEXT",
+      "timezone": "Europe/Paris",
+      "regular_hours": {
+        "open": "09:00",
+        "close": "17:30"
+      },
+      "notes": "Weekdays Mon–Fri"
+    },
+    {
+      "name": "Frankfurt Stock Exchange",
+      "code": "FRA",
+      "timezone": "Europe/Berlin",
+      "regular_hours": {
+        "open": "09:00",
+        "close": "17:30"
+      },
+      "notes": "Weekdays Mon–Fri"
+    },
+    {
+      "name": "Toronto Stock Exchange",
+      "code": "TSX",
+      "timezone": "America/Toronto",
+      "regular_hours": {
+        "open": "09:30",
+        "close": "16:00"
+      },
+      "notes": "Weekdays Mon–Fri"
+    },
+    {
+      "name": "Bombay Stock Exchange",
+      "code": "BSE",
+      "timezone": "Asia/Kolkata",
+      "regular_hours": {
+        "open": "09:15",
+        "close": "15:30"
+      },
+      "notes": "Weekdays Mon–Fri"
+    },
+    {
+      "name": "National Stock Exchange of India",
+      "code": "NSE",
+      "timezone": "Asia/Kolkata",
+      "regular_hours": {
+        "open": "09:15",
+        "close": "15:30"
+      },
+      "notes": "Weekdays Mon–Fri"
+    },
+    {
+      "name": "Australian Securities Exchange",
+      "code": "ASX",
+      "timezone": "Australia/Sydney",
+      "regular_hours": {
+        "open": "10:00",
+        "close": "16:00"
+      },
+      "notes": "Weekdays Mon–Fri"
+    }
+  ]
+}
+
