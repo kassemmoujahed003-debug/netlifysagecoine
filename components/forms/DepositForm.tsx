@@ -87,6 +87,7 @@ export default function DepositForm({ isOpen, onClose }: DepositFormProps) {
       password: '',
       accountNumber: '',
       fullName: '',
+      email: '',
       phoneNumber: '',
       note: '',
     })

@@ -87,6 +87,7 @@ export default function WithdrawalForm({ isOpen, onClose }: WithdrawalFormProps)
       accountNumber: '',
       password: '',
       fullName: '',
+      email: '',
       phoneNumber: '',
       note: '',
     })
