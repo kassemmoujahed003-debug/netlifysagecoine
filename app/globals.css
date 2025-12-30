@@ -20,7 +20,12 @@
   font-style: normal;
   font-display: swap;
 }
-
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+.animate-float { animation: float 4s ease-in-out infinite; }
+.animate-float-delayed { animation: float 5s ease-in-out 1s infinite; }
 @layer base {
   :root {
     /* Define RGB values for accent color (#CFE2F3) for use in rgba() */

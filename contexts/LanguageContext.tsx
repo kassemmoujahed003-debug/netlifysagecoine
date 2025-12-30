@@ -29,6 +29,14 @@ const translations: Record<Language, Record<string, string>> = {
     'hero.description': 'SageCoin provides expert analysis and exclusive trading strategies for the serious investor.',
     'hero.ctaButton': 'Open live account',
     'hero.visualLabel': 'Abstract 3D Financial Illustration',
+    'hero.form.secureUplink': '// SECURE_UPLINK',
+    'hero.form.requestAccess': 'Request Access',
+    'hero.form.fullIdentity': 'Full Identity',
+    'hero.form.communicationPoint': 'Email',
+    'hero.form.directPhone': 'Phone',
+    'hero.form.processing': 'PROCESSING...',
+    'hero.form.establishLink': 'ESTABLISH LINK →',
+    'hero.form.errorOccurred': 'An error occurred.',
     
     // User Dashboard
     'dashboard.settings': 'Settings',
@@ -344,6 +352,14 @@ const translations: Record<Language, Record<string, string>> = {
     'hero.description': 'يوفر SageCoin تحليلات خبيرة واستراتيجيات تداول حصرية للمستثمر الجاد.',
     'hero.ctaButton': 'فتح حساب حقيقي',
     'hero.visualLabel': 'رسم توضيحي مالي ثلاثي الأبعاد',
+    'hero.form.secureUplink': '// رابط آمن',
+    'hero.form.requestAccess': 'طلب الوصول',
+    'hero.form.fullIdentity': 'الهوية الكاملة',
+    'hero.form.communicationPoint': 'نقطة الاتصال',
+    'hero.form.directPhone': 'الهاتف المباشر',
+    'hero.form.processing': 'جاري المعالجة...',
+    'hero.form.establishLink': 'إنشاء رابط →',
+    'hero.form.errorOccurred': 'حدث خطأ.',
     
     // User Dashboard
     'dashboard.settings': 'الإعدادات',
