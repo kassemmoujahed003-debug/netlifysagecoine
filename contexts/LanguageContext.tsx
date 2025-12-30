@@ -271,35 +271,64 @@ const translations: Record<Language, Record<string, string>> = {
     'dashboard.vipPreviews.deleteConfirm': 'Are you sure you want to delete this preview? This action cannot be undone.',
     
     // About Journey
-    'about.step1.heading': 'WE SAW THE CHAOS.',
-    'about.step1.paragraph1': 'The market isn\'t designed for you to win. It\'s a system built on asymmetry—where institutions have the edge, the data, and the algorithms. Retail traders are left navigating a battlefield without a map.',
-    'about.step1.paragraph2': 'We watched millions lose their savings, their dreams, their futures—not because they lacked ambition, but because they lacked the tools that the 1% have always kept for themselves.',
-    'about.step2.heading': 'WE FOUND THE EDGE.',
-    'about.step2.paragraph1': 'Through years of institutional analysis, we\'ve reverse-engineered the strategies that move markets. We\'ve built the systems that predict trends before they become trends.',
-    'about.step3.heading': 'BEYOND THE NUMBERS.',
-    'about.step3.paragraph1': 'This isn\'t just about profits. It\'s about transformation. Every signal, every analysis, every trade represents a life changed—a family secured, a dream realized, a future rewritten.',
-    'about.step3.stats.livesChanged': 'Lives Changed',
-    'about.step3.stats.successRate': 'Success Rate',
-    'about.step3.stats.avgReturns': 'Avg. Returns',
-    'about.step4.heading': 'THE MOMENT OF TRUTH.',
-    'about.step4.question': 'Are you ready to join the 1%?',
-    'about.step4.buttonReady': 'YES, I\'M READY',
-    'about.step4.buttonNotYet': 'NOT YET',
-    'about.form.title': 'Get Started',
-    'about.form.description': 'Fill out the form and we\'ll contact you soon.',
-    'about.form.fullName': 'Full Name',
-    'about.form.email': 'Email Address',
-    'about.form.phone': 'Phone Number',
-    'about.form.cancel': 'Cancel',
-    'about.form.submit': 'Submit',
-    'about.form.submitting': 'Submitting...',
-    'about.form.error.fillAll': 'Please fill in all fields',
-    'about.form.error.unexpected': 'An unexpected error occurred. Please try again.',
-    'about.aria.close': 'Close',
-    'about.aria.previousStep': 'Previous step',
-    'about.aria.nextStep': 'Next step',
-    'about.aria.closeForm': 'Close form',
-    'about.aria.goToStep': 'Go to step',
+    'about.step1.heading': 'WE SAW THE NOISE.',
+
+'about.step1.paragraph1': 'Markets aren’t built for clarity. They operate on imbalance—where data, speed, and structure favor those with preparation. Most traders are left making decisions without context or direction.',
+
+'about.step1.paragraph2': 'We watched countless traders lose capital—not from lack of effort, but from trading without structure, discipline, or informed tools.',
+
+'about.step2.heading': 'WE BUILT THE FRAMEWORK.',
+
+'about.step2.paragraph1': 'Through years of disciplined market study, we distilled the principles that drive price action. We built systems focused on structure, timing, and probability—not prediction.',
+
+'about.step3.heading': 'BEYOND PERFORMANCE.',
+
+'about.step3.paragraph1': 'This is not just about returns. It’s about consistency, control, and confidence. Every signal and every analysis is designed to support wiser decisions and sustainable growth.',
+
+'about.step3.stats.livesChanged': 'Traders Guided',
+
+'about.step3.stats.successRate': 'Signal Accuracy',
+
+'about.step3.stats.avgReturns': 'Risk-Adjusted Returns',
+
+'about.step4.heading': 'THE DECISION.',
+
+'about.step4.question': 'Are you ready to trade wise?',
+
+'about.step4.buttonReady': 'YES, LET’S BEGIN',
+
+'about.step4.buttonNotYet': 'NOT YET',
+
+'about.form.title': 'Get Started',
+
+'about.form.description': 'Share your details and we’ll reach out shortly.',
+
+'about.form.fullName': 'Full Name',
+
+'about.form.email': 'Email Address',
+
+'about.form.phone': 'Phone Number',
+
+'about.form.cancel': 'Cancel',
+
+'about.form.submit': 'Submit',
+
+'about.form.submitting': 'Submitting...',
+
+'about.form.error.fillAll': 'Please fill in all fields',
+
+'about.form.error.unexpected': 'An unexpected error occurred. Please try again.',
+
+'about.aria.close': 'Close',
+
+'about.aria.previousStep': 'Previous step',
+
+'about.aria.nextStep': 'Next step',
+
+'about.aria.closeForm': 'Close form',
+
+'about.aria.goToStep': 'Go to step',
+
   },
   ar: {
     // Navigation
@@ -313,7 +342,7 @@ const translations: Record<Language, Record<string, string>> = {
     // Hero
     'hero.headline': 'أتقن الأسواق بدقة المؤسسات المالية.',
     'hero.description': 'يوفر SageCoin تحليلات خبيرة واستراتيجيات تداول حصرية للمستثمر الجاد.',
-    'hero.ctaButton': 'عرض دورات التداول',
+    'hero.ctaButton': 'فتح حساب حقيقي',
     'hero.visualLabel': 'رسم توضيحي مالي ثلاثي الأبعاد',
     
     // User Dashboard
@@ -558,22 +587,22 @@ const translations: Record<Language, Record<string, string>> = {
     'dashboard.vipPreviews.deleteConfirm': 'هل أنت متأكد من حذف هذه المعاينة? لا يمكن التراجع عن هذا الإجراء.',
     
     // About Journey
-    'about.step1.heading': 'رأينا الفوضى.',
-    'about.step1.paragraph1': 'السوق غير مصمم لتفوز. إنه نظام مبني على عدم التماثل—حيث تمتلك المؤسسات الميزة والبيانات والخوارزميات. يُترك المتداولون الأفراد يتنقلون في ساحة معركة بدون خريطة.',
-    'about.step1.paragraph2': 'شاهدنا الملايين يفقدون مدخراتهم وأحلامهم ومستقبلهم—ليس لأنهم يفتقرون إلى الطموح، ولكن لأنهم يفتقرون إلى الأدوات التي احتفظ بها الـ 1% دائماً لأنفسهم.',
-    'about.step2.heading': 'وجدنا الميزة.',
-    'about.step2.paragraph1': 'من خلال سنوات من التحليل المؤسسي، قمنا بعكس هندسة الاستراتيجيات التي تحرك الأسواق. لقد بنينا الأنظمة التي تتنبأ بالاتجاهات قبل أن تصبح اتجاهات.',
-    'about.step3.heading': 'ما وراء الأرقام.',
-    'about.step3.paragraph1': 'هذا ليس فقط عن الأرباح. إنه عن التحول. كل إشارة، كل تحليل، كل صفقة تمثل حياة تغيرت—عائلة آمنة، حلم تحقق، مستقبل أعيد كتابته.',
-    'about.step3.stats.livesChanged': 'حياة تغيرت',
-    'about.step3.stats.successRate': 'معدل النجاح',
-    'about.step3.stats.avgReturns': 'متوسط العوائد',
-    'about.step4.heading': 'لحظة الحقيقة.',
-    'about.step4.question': 'هل أنت مستعد للانضمام إلى الـ 1%؟',
-    'about.step4.buttonReady': 'نعم، أنا مستعد',
+    'about.step1.heading': 'رأينا الضوضاء.',
+    'about.step1.paragraph1': 'الأسواق ليست مبنية للوضوح. تعمل على عدم التوازن—حيث تفضل البيانات والسرعة والهيكل أولئك الذين لديهم استعداد. يُترك معظم المتداولين يتخذون قرارات بدون سياق أو اتجاه.',
+    'about.step1.paragraph2': 'شاهدنا عدداً لا يحصى من المتداولين يفقدون رؤوس أموالهم—ليس بسبب نقص الجهد، ولكن بسبب التداول بدون هيكل أو انضباط أو أدوات مستنيرة.',
+    'about.step2.heading': 'بنينا الإطار.',
+    'about.step2.paragraph1': 'من خلال سنوات من الدراسة المنضبطة للسوق، استخلصنا المبادئ التي تحرك حركة الأسعار. لقد بنينا أنظمة تركز على الهيكل والتوقيت والاحتمالية—وليس التنبؤ.',
+    'about.step3.heading': 'ما وراء الأداء.',
+    'about.step3.paragraph1': 'هذا ليس فقط عن العوائد. إنه عن الاتساق والتحكم والثقة. كل إشارة وكل تحليل مصمم لدعم قرارات أكثر حكمة ونمو مستدام.',
+    'about.step3.stats.livesChanged': 'المتداولون المسترشدون',
+    'about.step3.stats.successRate': 'دقة الإشارات',
+    'about.step3.stats.avgReturns': 'العوائد المعدلة للمخاطر',
+    'about.step4.heading': 'القرار.',
+    'about.step4.question': 'هل أنت مستعد للتداول بحكمة؟',
+    'about.step4.buttonReady': 'نعم، لنبدأ',
     'about.step4.buttonNotYet': 'ليس بعد',
     'about.form.title': 'ابدأ الآن',
-    'about.form.description': 'املأ النموذج وسنتصل بك قريباً.',
+    'about.form.description': 'شارك تفاصيلك وسنتواصل معك قريباً.',
     'about.form.fullName': 'الاسم الكامل',
     'about.form.email': 'عنوان البريد الإلكتروني',
     'about.form.phone': 'رقم الهاتف',
@@ -593,7 +622,6 @@ const translations: Record<Language, Record<string, string>> = {
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<Language>('en')
 
-  // Load language from localStorage on mount
   useEffect(() => {
     const savedLanguage = localStorage.getItem('language') as Language
     if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'ar')) {
@@ -601,7 +629,6 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     }
   }, [])
 
-  // Save language to localStorage and update document direction
   const setLanguage = (lang: Language) => {
     setLanguageState(lang)
     localStorage.setItem('language', lang)

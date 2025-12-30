@@ -6,6 +6,7 @@ import HeroSlider from './HeroSlider'
 import dynamic from 'next/dynamic'
 import DiamondIcon from './DiamondIcon'
 import MarketStatusBadge from './MarketStatusBadge'
+import { submitCallbackRequest } from '@/app/actions/form-actions'
 
 // Dynamically import 3D background - only load on desktop for performance
 const DiamondBackground3D = dynamic(() => import('./DiamondBackground3D'), {
@@ -24,6 +25,12 @@ export default function Hero() {
   const [webglAvailable, setWebglAvailable] = useState(true)
   const [isMobile, setIsMobile] = useState(false)
   const [isClient, setIsClient] = useState(false)
+  const [showContactForm, setShowContactForm] = useState(false)
+  const [fullName, setFullName] = useState('')
+  const [email, setEmail] = useState('')
+  const [phoneNumber, setPhoneNumber] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitMessage, setSubmitMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null)
 
   useEffect(() => {
     setIsClient(true)
@@ -54,6 +61,41 @@ export default function Hero() {
     const coursesSection = document.getElementById('courses')
     if (coursesSection) {
       coursesSection.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
+  const handleContactSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    
+    if (!fullName.trim() || !email.trim() || !phoneNumber.trim()) {
+      setSubmitMessage({ type: 'error', text: 'Please fill in all fields' })
+      return
+    }
+
+    setIsSubmitting(true)
+    setSubmitMessage(null)
+
+    try {
+      const result = await submitCallbackRequest(fullName, email, phoneNumber)
+      
+      if (result.success) {
+        setSubmitMessage({ type: 'success', text: result.message })
+        // Reset form
+        setFullName('')
+        setEmail('')
+        setPhoneNumber('')
+        // Close form after 3 seconds
+        setTimeout(() => {
+          setShowContactForm(false)
+          setSubmitMessage(null)
+        }, 3000)
+      } else {
+        setSubmitMessage({ type: 'error', text: result.message })
+      }
+    } catch (error) {
+      setSubmitMessage({ type: 'error', text: 'An unexpected error occurred. Please try again later.' })
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -126,27 +168,25 @@ export default function Hero() {
 
             {/* Buttons */}
             <div className={`flex flex-col sm:flex-row gap-4 pt-2 sm:pt-4 justify-center lg:justify-start ${isRTL ? 'lg:justify-end' : ''}`}>
-              <a 
-                href="#courses"
-                onClick={scrollToCourses}
+              <button 
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  setShowContactForm(true)
+                }}
                 className="btn-primary inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg shadow-[0_0_20px_rgba(var(--accent-rgb),0.3)] hover:shadow-[0_0_30px_rgba(var(--accent-rgb),0.5)] transition-all w-full sm:w-auto"
               >
                 {t('hero.ctaButton')}
-              </a>
+              </button>
             </div>
           </div>
         </div>
 
-        {/* ============================================
-            RIGHT COLUMN: THE 3-DIAMOND CLUSTER
-            (Slider + 2 Satellites)
-           ============================================ */}
         <div className={`relative flex items-center justify-center py-6 sm:py-10 ${isRTL ? 'lg:col-start-1 lg:row-start-1' : ''}`}>
            
-           {/* THE CLUSTER CONTAINER - Responsive sizing */}
            <div className="relative w-[16rem] h-[16rem] xs:w-[18rem] xs:h-[18rem] sm:w-[22rem] sm:h-[22rem] md:w-[24rem] md:h-[24rem] lg:w-[28rem] lg:h-[28rem]">
 
-              {/* --- DIAMOND 1: THE SLIDER (The Main Jewel) --- */}
               <div className="absolute inset-0 rotate-45 rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] overflow-hidden border-[2px] sm:border-[3px] border-accent/70 shadow-[0_0_40px_-10px_rgba(var(--accent-rgb),0.4)] sm:shadow-[0_0_80px_-15px_rgba(var(--accent-rgb),0.5)] z-10 bg-primary-dark diamond-main-glow">
                   
                   {/* Outer glow ring */}
@@ -201,6 +241,110 @@ export default function Hero() {
         </div>
 
       </div>
+
+      {/* Contact Form Modal */}
+      {showContactForm && (
+        <div 
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setShowContactForm(false)
+              setSubmitMessage(null)
+            }
+          }}
+        >
+          <div className={`relative w-full max-w-md bg-secondary-surface border border-accent/20 rounded-2xl p-8 shadow-2xl ${isRTL ? 'text-right' : 'text-left'}`}>
+            {/* Close button for modal */}
+            <button
+              onClick={() => {
+                setShowContactForm(false)
+                setSubmitMessage(null)
+                setFullName('')
+                setEmail('')
+                setPhoneNumber('')
+              }}
+              className={`absolute top-4 ${isRTL ? 'left-4' : 'right-4'} w-8 h-8 flex items-center justify-center text-accent/60 hover:text-accent transition-colors`}
+              aria-label="Close form"
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            <h2 className="text-3xl font-bold text-base-white mb-2">Contact Us</h2>
+            <p className="text-accent/60 mb-6">Fill in your details and we'll get back to you soon.</p>
+
+            <form onSubmit={handleContactSubmit} className="space-y-4">
+              <input 
+                type="text" 
+                placeholder="Full Name" 
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                disabled={isSubmitting}
+                className="w-full bg-primary-dark/40 border border-accent/20 rounded-xl p-4 text-base-white outline-none focus:border-accent transition-colors placeholder:text-accent/40 disabled:opacity-50 disabled:cursor-not-allowed" 
+                required
+                onClick={(e) => e.stopPropagation()}
+              />
+              <input 
+                type="email" 
+                placeholder="Email" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={isSubmitting}
+                className="w-full bg-primary-dark/40 border border-accent/20 rounded-xl p-4 text-base-white outline-none focus:border-accent transition-colors placeholder:text-accent/40 disabled:opacity-50 disabled:cursor-not-allowed" 
+                required
+                onClick={(e) => e.stopPropagation()}
+              />
+              <input 
+                type="tel" 
+                placeholder="Phone Number" 
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                disabled={isSubmitting}
+                className="w-full bg-primary-dark/40 border border-accent/20 rounded-xl p-4 text-base-white outline-none focus:border-accent transition-colors placeholder:text-accent/40 disabled:opacity-50 disabled:cursor-not-allowed" 
+                required
+                onClick={(e) => e.stopPropagation()}
+              />
+              
+              {submitMessage && (
+                <div className={`p-3 rounded-xl text-sm font-medium ${
+                  submitMessage.type === 'success' 
+                    ? 'bg-green-500/20 text-green-400 border border-green-500/30' 
+                    : 'bg-red-500/20 text-red-400 border border-red-500/30'
+                }`}>
+                  {submitMessage.text}
+                </div>
+              )}
+
+              <div className={`flex gap-3 pt-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <button 
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setShowContactForm(false)
+                    setSubmitMessage(null)
+                    setFullName('')
+                    setEmail('')
+                    setPhoneNumber('')
+                  }}
+                  disabled={isSubmitting}
+                  className="flex-1 bg-primary-dark/40 text-base-white font-bold py-4 rounded-xl hover:bg-primary-dark/60 transition-all disabled:opacity-50 disabled:cursor-not-allowed border border-accent/20"
+                >
+                  Cancel
+                </button>
+                <button 
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="flex-1 btn-primary font-bold py-4 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {isSubmitting ? 'Submitting...' : 'Submit'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </section>
   )
 }

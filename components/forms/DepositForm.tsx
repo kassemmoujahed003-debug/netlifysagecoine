@@ -17,6 +17,7 @@ export default function DepositForm({ isOpen, onClose }: DepositFormProps) {
     password: '',
     accountNumber: '',
     fullName: '',
+    email: '',
     phoneNumber: '',
     note: '',
   })
@@ -48,6 +49,7 @@ export default function DepositForm({ isOpen, onClose }: DepositFormProps) {
         formData.accountNumber,
         formData.fullName,
         formData.phoneNumber,
+        formData.email,
         formData.note || undefined,
         token || undefined
       )
@@ -59,6 +61,7 @@ export default function DepositForm({ isOpen, onClose }: DepositFormProps) {
           password: '',
           accountNumber: '',
           fullName: '',
+          email: '',
           phoneNumber: '',
           note: '',
         })
@@ -194,6 +197,22 @@ export default function DepositForm({ isOpen, onClose }: DepositFormProps) {
           <p className={`text-accent text-xs mt-1 ${isRTL ? 'text-right' : 'text-left'}`}>
             The name should be exactly like the name in your Wish account
           </p>
+        </div>
+
+        {/* Email */}
+        <div>
+          <label className={`block text-sm font-medium text-base-white mb-2 ${isRTL ? 'text-right' : 'text-left'}`}>
+            Email <span className="text-red-400">*</span>
+          </label>
+          <input
+            type="email"
+            value={formData.email}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            className="w-full px-4 py-2 bg-primary-dark border border-accent rounded-lg text-base-white placeholder-accent focus:outline-none focus:ring-2 focus:ring-accent"
+            placeholder="Enter your email address"
+            required
+            disabled={isSubmitting}
+          />
         </div>
 
         {/* Phone Number */}
